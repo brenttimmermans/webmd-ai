@@ -2,6 +2,8 @@
 
 This document provides guidance for AI coding agents working in this repository.
 
+**Code style:** Follow [CODING_STYLE.md](CODING_STYLE.md) for all code you write or edit.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

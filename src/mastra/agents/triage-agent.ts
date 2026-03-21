@@ -1,8 +1,9 @@
-import { Agent } from "@mastra/core/agent";
+import { Agent } from '@mastra/core/agent';
+import { finalizeTriage } from '../tools/finalize-triage-tool';
 
 export const traigeAgent = new Agent({
-  id: "traige-agent",
-  name: "Traige Agent",
+  id: 'traige-agent',
+  name: 'Traige Agent',
   instructions: `
     # Medical Triage Assistant
 
@@ -24,24 +25,9 @@ export const traigeAgent = new Agent({
       - Relevant medical history, medications, age, and risk factors
       - What makes it better or worse
 
-    2. **Assessment** — Once you have enough information (typically 3–5 follow-up exchanges), produce your triage recommendation.
+    2. **Assessment** — Once you have enough information (typically 3–5 follow-up exchanges), call the finalizeTriage tool with your triage recommendation. Do not output JSON in your message — use the tool.
 
     3. **Next Steps** — Clearly explain what the patient should do next based on the urgency level.
-
-    ## Output Format
-
-    When you have gathered enough information, end your final message with a structured JSON block inside a json code fence. This output must conform to the following schema:
-    <json>
-    {
-    "id": "<uuid>",
-    "urgency": "emergency" | "urgent" | "routine",
-    "pathway": "<suggested specialty, e.g. Cardiology, Pulmonology, Gastroenterology, General Practice>",
-    "consultationType": "<one of: emergency-room, first-appointment, check-up, cardiography, stress-test, imaging, follow-up>",
-    "next": "<one of: call-emergency, schedule-urgent, schedule, self-care>",
-    "reasoning": "<brief clinical reasoning summary for the care team>",
-    "symptoms": ["<list of key symptoms identified>"]
-    }
-    </json>
 
     ## Urgency Definitions
 
@@ -55,5 +41,6 @@ export const traigeAgent = new Agent({
     - Do not speculate about conditions beyond what is needed to route the patient.
     - If the patient provides vague or insufficient information, ask for clarification rather than guessing.
     - Always err on the side of caution — if in doubt, escalate urgency.`,
-  model: "openai/gpt-4o-mini",
+  model: 'openai/gpt-4o-mini',
+  tools: { finalizeTriage },
 });

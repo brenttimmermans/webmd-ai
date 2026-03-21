@@ -1,8 +1,9 @@
 "use client";
 
 import "@/app/globals.css";
-import { useEffect, useState } from "react";
-import { DefaultChatTransport, ToolUIPart } from "ai";
+import { useState } from "react";
+import { DefaultChatTransport } from "ai";
+import type { ToolUIPart } from "ai";
 import { useChat } from "@ai-sdk/react";
 
 import {
@@ -34,20 +35,11 @@ import {
 function Chat() {
   const [input, setInput] = useState<string>("");
 
-  const { messages, setMessages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
   });
-
-  useEffect(() => {
-    const fetchMessages = async () => {
-      const res = await fetch("/api/chat");
-      const data = await res.json();
-      setMessages([...data]);
-    };
-    fetchMessages();
-  }, [setMessages]);
 
   const handleSubmit = async () => {
     if (!input.trim()) return;

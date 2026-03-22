@@ -64,49 +64,54 @@ export default function TriageResult({
       aria-label="Triage recommendation"
     >
       <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
-        <article
-          className={cn(
-            'flex flex-col gap-4 rounded-lg border p-4',
-            cardClassName,
-          )}
-        >
-          <dl className="grid gap-4">
-            <div>
-              <dt className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
-                Recommended pathway
-              </dt>
-              <dd className="mt-1 font-medium">{result.pathway}</dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
-                Consultation type
-              </dt>
-              <dd className="mt-1">
-                {humanizeConsultationType(result.consultationType)}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
-                Next steps
-              </dt>
-              <dd className="mt-1">{humanizeNextSteps(result.nextSteps)}</dd>
-            </div>
-            {result.symptoms && result.symptoms.length > 0 && (
+        <div className="flex w-full flex-col gap-2">
+          <article
+            className={cn(
+              'flex flex-col gap-4 rounded-lg border p-4',
+              cardClassName,
+            )}
+          >
+            <dl className="grid gap-4">
               <div>
                 <dt className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
-                  Symptoms identified
+                  Recommended pathway
+                </dt>
+                <dd className="mt-1 font-medium">{result.pathway}</dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
+                  Consultation type
                 </dt>
                 <dd className="mt-1">
-                  <ul className="list-inside list-disc space-y-1 text-sm">
-                    {result.symptoms.map((symptom) => (
-                      <li key={symptom}>{symptom}</li>
-                    ))}
-                  </ul>
+                  {humanizeConsultationType(result.consultationType)}
                 </dd>
               </div>
-            )}
-          </dl>
-        </article>
+              <div>
+                <dt className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
+                  Next steps
+                </dt>
+                <dd className="mt-1">{humanizeNextSteps(result.nextSteps)}</dd>
+              </div>
+              {result.symptoms && result.symptoms.length > 0 && (
+                <div>
+                  <dt className="text-muted-foreground text-xs font-medium uppercase tracking-wide">
+                    Symptoms identified
+                  </dt>
+                  <dd className="mt-1">
+                    <ul className="list-inside list-disc space-y-1 text-sm">
+                      {result.symptoms.map((symptom) => (
+                        <li key={symptom}>{symptom}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              )}
+            </dl>
+          </article>
+          <p className="text-muted-foreground text-xs">
+            Otto can make mistakes. Consider checking important information.
+          </p>
+        </div>
         <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-3">
           <Button type="button">{URGENCY_ACTIONS[result.urgency].label}</Button>
           <Button type="button" variant="outline">

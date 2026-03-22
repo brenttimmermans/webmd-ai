@@ -4,8 +4,9 @@ import '@/app/globals.css';
 import { useChat } from '@ai-sdk/react';
 import type { ToolUIPart } from 'ai';
 import { DefaultChatTransport } from 'ai';
+import { Menu } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Conversation,
   ConversationContent,
@@ -51,13 +52,33 @@ function sessionMessagesToUiMessages(session: SessionWithMessages): Array<{
   }));
 }
 
+const SIDEBAR_BREAKPOINT = 850;
+
+function useIsNarrowViewport(breakpoint: number): boolean {
+  const [isNarrow, setIsNarrow] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (): void => setIsNarrow(mql.matches);
+    handler();
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, [breakpoint]);
+
+  return isNarrow;
+}
+
 function Chat(): React.ReactElement {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isNarrow = useIsNarrowViewport(SIDEBAR_BREAKPOINT);
 
   const [input, setInput] = useState<string>('');
 
   const sessionIdRef = useRef<string | null>(null);
+
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
 
   useEffect(() => {
     async function loadSessions(): Promise<void> {
@@ -88,12 +109,14 @@ function Chat(): React.ReactElement {
     setMessages(sessionMessagesToUiMessages(session));
     sessionIdRef.current = id;
     setCurrentSessionId(id);
+    closeSidebar();
   };
 
   const handleNewChat = (): void => {
     setMessages([]);
     sessionIdRef.current = null;
     setCurrentSessionId(null);
+    closeSidebar();
   };
 
   const handleDeleteSession = async (id: string): Promise<void> => {
@@ -131,15 +154,47 @@ function Chat(): React.ReactElement {
 
   return (
     <div className="flex h-screen w-full">
-      <Sidebar
-        sessions={sessions}
-        currentSessionId={currentSessionId}
-        onSelectSession={handleLoadSession}
-        onNewChat={handleNewChat}
-        onDeleteSession={handleDeleteSession}
-        isNewChatDisabled={isStreaming}
-      />
-      <div className="flex flex-1 flex-col p-6">
+      {isNarrow && sidebarOpen && (
+        <>
+          <button
+            type="button"
+            aria-label="Close sidebar"
+            className="fixed inset-0 z-40 bg-black/50"
+            onClick={closeSidebar}
+          />
+          <div className="fixed inset-y-0 left-0 z-50 flex h-full w-60 flex-col shadow-xl">
+            <Sidebar
+              sessions={sessions}
+              currentSessionId={currentSessionId}
+              onSelectSession={handleLoadSession}
+              onNewChat={handleNewChat}
+              onDeleteSession={handleDeleteSession}
+              isNewChatDisabled={isStreaming}
+            />
+          </div>
+        </>
+      )}
+      {!isNarrow && (
+        <Sidebar
+          sessions={sessions}
+          currentSessionId={currentSessionId}
+          onSelectSession={handleLoadSession}
+          onNewChat={handleNewChat}
+          onDeleteSession={handleDeleteSession}
+          isNewChatDisabled={isStreaming}
+        />
+      )}
+      <div className="relative flex flex-1 flex-col p-6">
+        {isNarrow && (
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="absolute left-4 top-4 z-10 rounded-md p-2 text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            aria-label="Open sidebar"
+          >
+            <Menu className="size-5" />
+          </button>
+        )}
         <div className="flex h-full flex-col">
           <Conversation className="h-full">
             <ConversationContent>

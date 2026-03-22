@@ -24,7 +24,7 @@ export default function Sidebar({
 }: SidebarProps): React.ReactElement {
   return (
     <aside
-      className="flex w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground"
+      className="flex h-full w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground"
       aria-label="Chat sessions"
     >
       <nav className="flex flex-1 flex-col overflow-y-auto p-2">

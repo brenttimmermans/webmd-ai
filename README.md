@@ -1,5 +1,7 @@
 # WebMD AI — Otto
 
+> The [`docs`](docs) folder includes some additional notes and a time sheet for this case.
+
 <p align="center">
   <img src="public/images/otto-full.png" alt="Otto" width="120" />
 </p>
@@ -52,14 +54,14 @@ Open [http://localhost:3000](http://localhost:3000) and go to the chat.
 
 ## Tech stack
 
-| Layer | Tech |
-|-------|------|
-| **Framework** | Next.js 16, React 19 |
-| **AI** | Mastra, OpenAI GPT-4o-mini |
-| **Database** | Drizzle ORM, Neon (serverless Postgres) |
-| **UI** | shadcn/ui, Radix UI, Tailwind CSS |
-| **Chat** | Vercel AI SDK |
-| **Validation** | Zod |
+| Layer          | Tech                                    |
+| -------------- | --------------------------------------- |
+| **Framework**  | Next.js 16, React 19                    |
+| **AI**         | Mastra, OpenAI GPT-4o-mini              |
+| **Database**   | Drizzle ORM, Neon (serverless Postgres) |
+| **UI**         | shadcn/ui, Radix UI, Tailwind CSS       |
+| **Chat**       | Vercel AI SDK                           |
+| **Validation** | Zod                                     |
 
 ---
 

@@ -4,6 +4,7 @@ import '@/app/globals.css';
 import { useChat } from '@ai-sdk/react';
 import type { ToolUIPart } from 'ai';
 import { DefaultChatTransport } from 'ai';
+import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Conversation,
@@ -146,6 +147,27 @@ function Chat(): React.ReactElement {
                 <div key={message.id}>
                   {message.parts?.map((part, i) => {
                     if (part.type === 'text') {
+                      if (message.role === 'assistant') {
+                        return (
+                          <div
+                            key={`${message.id}-${i}`}
+                            className="flex w-full max-w-[95%] flex-row items-start gap-2"
+                          >
+                            <Image
+                              src="/images/otto-head.png"
+                              alt="Otto"
+                              width={48}
+                              height={48}
+                              className="h-12 w-12 shrink-0 rounded-full object-cover"
+                            />
+                            <Message from={message.role}>
+                              <MessageContent>
+                                <MessageResponse>{part.text}</MessageResponse>
+                              </MessageContent>
+                            </Message>
+                          </div>
+                        );
+                      }
                       return (
                         <Message key={`${message.id}-${i}`} from={message.role}>
                           <MessageContent>

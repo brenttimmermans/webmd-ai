@@ -51,7 +51,7 @@ const outputSchema = z.object({
 export const finalizeTriage = createTool({
   id: 'finalize-triage',
   description:
-    'Call this when you have gathered enough symptom information to produce a triage recommendation. Use after 3-5 follow-up exchanges.',
+    'REQUIRED: Call this tool when you have gathered enough symptom information. You MUST use this tool to complete the triage — never provide recommendations as text. Use after 3-5 follow-up exchanges.',
   inputSchema,
   outputSchema,
   requestContextSchema: z.object({

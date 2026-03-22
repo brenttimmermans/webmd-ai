@@ -1,7 +1,7 @@
 'use client';
 
 import { format } from 'date-fns';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 
 import type { Session } from '@/lib/api-client';
 
@@ -10,6 +10,7 @@ export interface SidebarProps {
   currentSessionId: string | null;
   onSelectSession: (id: string) => void;
   onNewChat: () => void;
+  onDeleteSession: (id: string) => void;
   isNewChatDisabled?: boolean;
 }
 
@@ -18,6 +19,7 @@ export default function Sidebar({
   currentSessionId,
   onSelectSession,
   onNewChat,
+  onDeleteSession,
   isNewChatDisabled = false,
 }: SidebarProps): React.ReactElement {
   return (
@@ -33,18 +35,31 @@ export default function Sidebar({
         ) : (
           <ul className="flex flex-col gap-0.5">
             {sessions.map((session) => (
-              <li key={session.id}>
-                <button
-                  type="button"
-                  onClick={() => onSelectSession(session.id)}
-                  className={`w-full rounded-md px-2 py-2 text-left text-sm transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground ${
-                    currentSessionId === session.id
-                      ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                      : ''
-                  }`}
-                >
-                  {format(new Date(session.createdAt), 'dd/MM HH:mm')}
-                </button>
+              <li key={session.id} className="group">
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => onSelectSession(session.id)}
+                    className={`min-w-0 flex-1 rounded-md px-2 py-2 text-left text-sm transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground ${
+                      currentSessionId === session.id
+                        ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+                        : ''
+                    }`}
+                  >
+                    {format(new Date(session.createdAt), 'dd/MM HH:mm')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteSession(session.id);
+                    }}
+                    className="shrink-0 rounded p-1 opacity-0 transition-opacity hover:bg-sidebar-accent group-hover:opacity-100"
+                    aria-label="Delete session"
+                  >
+                    <Trash2 className="size-3" />
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

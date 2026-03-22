@@ -29,7 +29,12 @@ import {
 } from '@/components/ai-elements/tool';
 import Sidebar from '@/components/chat/Sidebar';
 import type { Session, SessionWithMessages } from '@/lib/api-client';
-import { createSession, getSession, listSessions } from '@/lib/api-client';
+import {
+  createSession,
+  deleteSession,
+  getSession,
+  listSessions,
+} from '@/lib/api-client';
 
 function sessionMessagesToUiMessages(session: SessionWithMessages): Array<{
   id: string;
@@ -88,6 +93,21 @@ function Chat(): React.ReactElement {
     setCurrentSessionId(null);
   };
 
+  const handleDeleteSession = async (id: string): Promise<void> => {
+    if (!window.confirm('Delete this session?')) return;
+
+    const ok = await deleteSession(id);
+    if (!ok) return;
+
+    setSessions((prev) => prev.filter((s) => s.id !== id));
+
+    if (id === currentSessionId) {
+      setMessages([]);
+      sessionIdRef.current = null;
+      setCurrentSessionId(null);
+    }
+  };
+
   const handleSubmit = async (): Promise<void> => {
     if (!input.trim()) return;
 
@@ -113,6 +133,7 @@ function Chat(): React.ReactElement {
         currentSessionId={currentSessionId}
         onSelectSession={handleLoadSession}
         onNewChat={handleNewChat}
+        onDeleteSession={handleDeleteSession}
         isNewChatDisabled={isStreaming}
       />
       <div className="flex flex-1 flex-col p-6">

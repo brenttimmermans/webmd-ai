@@ -45,3 +45,8 @@ export async function createSession(): Promise<CreateSessionResponse | null> {
 
   return (await res.json()) as CreateSessionResponse;
 }
+
+export async function deleteSession(id: string): Promise<boolean> {
+  const res = await fetch(`/api/sessions/${id}`, { method: 'DELETE' });
+  return res.ok;
+}

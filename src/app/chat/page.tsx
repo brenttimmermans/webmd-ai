@@ -233,9 +233,9 @@ function Chat(): React.ReactElement {
             <Image
               src="/images/otto-avatar.png"
               alt="Otto, your friendly medical triage assistant"
-              width={280}
-              height={280}
-              className="h-auto w-48 shrink-0 object-contain md:w-64"
+              width={192}
+              height={192}
+              className="h-auto w-36 shrink-0 object-contain md:w-48"
               priority
               unoptimized
             />
@@ -243,7 +243,7 @@ function Chat(): React.ReactElement {
               <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
                 Hi, I&apos;m Otto
               </h1>
-              <p className="text-muted-foreground text-base leading-relaxed">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 Whenever you&apos;re ready, share what&apos;s on your mind.
                 I&apos;ll ask a few questions about your symptoms and help you
                 figure out what to do next. I can&apos;t diagnose, but I&apos;ll

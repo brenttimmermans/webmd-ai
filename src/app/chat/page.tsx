@@ -23,13 +23,6 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
 } from '@/components/ai-elements/prompt-input';
-import {
-  Tool,
-  ToolContent,
-  ToolHeader,
-  ToolInput,
-  ToolOutput,
-} from '@/components/ai-elements/tool';
 import Sidebar from '@/components/chat/Sidebar';
 import TriageResult from '@/components/chat/TriageResult';
 import { InputGroupAddon } from '@/components/ui/input-group';
@@ -293,30 +286,6 @@ function Chat(): React.ReactElement {
                                 <MessageResponse>{part.text}</MessageResponse>
                               </MessageContent>
                             </Message>
-                          );
-                        }
-
-                        if (part.type?.startsWith('tool-')) {
-                          return (
-                            <Tool key={`${message.id}-${i}`}>
-                              <ToolHeader
-                                type={(part as ToolUIPart).type}
-                                state={
-                                  (part as ToolUIPart).state ||
-                                  'output-available'
-                                }
-                                className="cursor-pointer"
-                              />
-                              <ToolContent>
-                                <ToolInput
-                                  input={(part as ToolUIPart).input || {}}
-                                />
-                                <ToolOutput
-                                  output={(part as ToolUIPart).output}
-                                  errorText={(part as ToolUIPart).errorText}
-                                />
-                              </ToolContent>
-                            </Tool>
                           );
                         }
 

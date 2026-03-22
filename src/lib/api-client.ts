@@ -1,52 +1,17 @@
-export type TriageResult = {
-  urgency: 'emergency' | 'urgent' | 'routine';
-  pathway: string;
-  consultationType: string;
-  nextSteps: string;
-  reasoning?: string;
-  symptoms?: string[];
-};
-
-export type Session = {
-  id: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type SessionWithMessages = Session & {
-  messages: Message[];
-  result?: SessionResult | null;
-};
-
-export type SessionResult = {
-  id: string;
-  urgency: string;
-  pathway: string;
-  consultationType: string;
-  nextSteps: string;
-  rawOutput: Record<string, unknown> | null;
-  createdAt: string;
-};
-
-export type Message = {
-  id: string;
-  role: MessageRole;
-  content: string;
-  createdAt: string;
-};
-
-export type MessageRole = 'user' | 'assistant' | 'system';
-
-export type ListSessionsResponse = Session[];
+import {
+  type CreateSessionResponse,
+  type GetSessionResponse,
+  type ListSessionsResponse,
+  type SessionResult,
+  type TriageResult,
+  Urgency,
+} from '@/types';
 
 export async function listSessions(): Promise<ListSessionsResponse> {
   const res = await fetch('/api/sessions');
   if (!res.ok) return [];
   return (await res.json()) as ListSessionsResponse;
 }
-
-export type GetSessionResponse = SessionWithMessages;
 
 export async function getSession(
   id: string,
@@ -55,8 +20,6 @@ export async function getSession(
   if (!res.ok) return null;
   return (await res.json()) as GetSessionResponse;
 }
-
-export type CreateSessionResponse = SessionWithMessages;
 
 export async function createSession(): Promise<CreateSessionResponse | null> {
   const res = await fetch('/api/sessions', { method: 'POST' });
@@ -76,7 +39,7 @@ export function sessionResultToTriageResult(
 ): TriageResult {
   const raw = result.rawOutput ?? {};
   return {
-    urgency: result.urgency as TriageResult['urgency'],
+    urgency: result.urgency as Urgency,
     pathway: result.pathway,
     consultationType: result.consultationType,
     nextSteps: result.nextSteps,
@@ -103,14 +66,14 @@ export function toolOutputToTriageResult(output: unknown): TriageResult | null {
     return null;
   }
   if (
-    urgency !== 'emergency' &&
-    urgency !== 'urgent' &&
-    urgency !== 'routine'
+    urgency !== Urgency.Emergency &&
+    urgency !== Urgency.Urgent &&
+    urgency !== Urgency.Routine
   ) {
     return null;
   }
   return {
-    urgency,
+    urgency: urgency as Urgency,
     pathway,
     consultationType,
     nextSteps,

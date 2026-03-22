@@ -26,11 +26,6 @@ import {
 import Sidebar from '@/components/chat/Sidebar';
 import TriageResult from '@/components/chat/TriageResult';
 import { InputGroupAddon } from '@/components/ui/input-group';
-import type {
-  Session,
-  SessionWithMessages,
-  TriageResult as TriageResultType,
-} from '@/lib/api-client';
 import {
   createSession,
   deleteSession,
@@ -39,8 +34,13 @@ import {
   sessionResultToTriageResult,
   toolOutputToTriageResult,
 } from '@/lib/api-client';
+import type {
+  MinimalSession,
+  Session,
+  TriageResult as TriageResultType,
+} from '@/types';
 
-function sessionMessagesToUiMessages(session: SessionWithMessages): Array<{
+function sessionMessagesToUiMessages(session: Session): Array<{
   id: string;
   role: 'user' | 'assistant' | 'system';
   parts: Array<{ type: 'text'; text: string }>;
@@ -69,7 +69,7 @@ function useIsNarrowViewport(breakpoint: number): boolean {
 }
 
 function Chat(): React.ReactElement {
-  const [sessions, setSessions] = useState<Session[]>([]);
+  const [sessions, setSessions] = useState<MinimalSession[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isNarrow = useIsNarrowViewport(SIDEBAR_BREAKPOINT);

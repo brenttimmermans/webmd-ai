@@ -5,23 +5,11 @@ import { z } from 'zod';
 import { results, sessions } from '@/db/schema';
 import { db } from '@/lib/db';
 import { isValidUuid } from '@/lib/uuid';
+import { ConsultationType, NextSteps, Urgency } from '@/types/enums';
 
-const urgencyEnum = z.enum(['emergency', 'urgent', 'routine']);
-const consultationTypeEnum = z.enum([
-  'emergency-room',
-  'first-appointment',
-  'check-up',
-  'cardiography',
-  'stress-test',
-  'imaging',
-  'follow-up',
-]);
-const nextEnum = z.enum([
-  'call-emergency',
-  'schedule-urgent',
-  'schedule',
-  'self-care',
-]);
+const urgencyEnum = z.enum(Urgency);
+const consultationTypeEnum = z.enum(ConsultationType);
+const nextEnum = z.enum(NextSteps);
 
 const inputSchema = z.object({
   urgency: urgencyEnum.describe('Urgency level: emergency, urgent, or routine'),

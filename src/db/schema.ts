@@ -13,15 +13,22 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 
-const sessionStatusEnum = pgEnum('session_status', [
-  'active',
-  'completed',
-  'abandoned',
-]);
+import { MessageRole, SessionStatus, Urgency } from '@/types/enums';
 
-const messageRoleEnum = pgEnum('message_role', ['user', 'assistant', 'system']);
+const sessionStatusEnum = pgEnum(
+  'session_status',
+  Object.values(SessionStatus) as [string, ...string[]],
+);
 
-const urgencyEnum = pgEnum('urgency', ['emergency', 'urgent', 'routine']);
+const messageRoleEnum = pgEnum(
+  'message_role',
+  Object.values(MessageRole) as [string, ...string[]],
+);
+
+const urgencyEnum = pgEnum(
+  'urgency',
+  Object.values(Urgency) as [string, ...string[]],
+);
 
 export const sessions = pgTable('sessions', {
   id: uuid('id').primaryKey().defaultRandom(),

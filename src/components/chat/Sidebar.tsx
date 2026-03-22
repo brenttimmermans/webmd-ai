@@ -3,10 +3,10 @@
 import { format } from 'date-fns';
 import { Plus, Trash2 } from 'lucide-react';
 
-import type { Session } from '@/lib/api-client';
+import type { MinimalSession } from '@/types';
 
 export interface SidebarProps {
-  sessions: Session[];
+  sessions: MinimalSession[];
   currentSessionId: string | null;
   onSelectSession: (id: string) => void;
   onNewChat: () => void;

@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import type { TriageResult as TriageResultType } from '@/lib/api-client';
 import { cn } from '@/lib/utils';
+import type { TriageResult as TriageResultType } from '@/types';
 
 const URGENCY_ACTIONS: Record<TriageResultType['urgency'], { label: string }> =
   {

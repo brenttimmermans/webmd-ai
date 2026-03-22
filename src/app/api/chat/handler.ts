@@ -8,10 +8,8 @@ import { db } from '@/lib/db';
 import { isValidUuid } from '@/lib/uuid';
 import { mastra } from '@/mastra';
 import { traigeAgent } from '@/mastra/agents/triage-agent';
-
-import type { ChatRequestBody, TextDeltaPayload } from './types';
-
-type MessageRole = 'user' | 'assistant';
+import type { ChatRequestBody, TextDeltaPayload } from '@/types';
+import { MessageRole } from '@/types';
 
 export async function handleChatPost(
   params: ChatRequestBody,
@@ -28,11 +26,11 @@ export async function handleChatPost(
   ) {
     const lastMessage = params.messages[params.messages.length - 1];
 
-    const isUserMessage = lastMessage?.role === 'user';
+    const isUserMessage = lastMessage?.role === MessageRole.User;
     if (isUserMessage) {
       const message = lastMessage.parts?.[0].text?.trim();
       if (message) {
-        await saveMessage(sessionId, 'user', message);
+        await saveMessage(sessionId, MessageRole.User, message);
       }
     }
   }
@@ -61,7 +59,7 @@ export async function handleChatPost(
 
 async function saveMessage(
   sessionId: string,
-  role: MessageRole,
+  role: MessageRole.User | MessageRole.Assistant,
   content: string,
 ): Promise<void> {
   try {
@@ -118,7 +116,11 @@ function createStreamCaptureTransform(
     },
     async flush() {
       if (assistantText.trim() && isValidUuid(sessionId)) {
-        await saveMessage(sessionId, 'assistant', assistantText.trim());
+        await saveMessage(
+          sessionId,
+          MessageRole.Assistant,
+          assistantText.trim(),
+        );
       }
     },
   });

@@ -18,6 +18,7 @@ import {
 import {
   PromptInput,
   PromptInputBody,
+  PromptInputSubmit,
   PromptInputTextarea,
 } from '@/components/ai-elements/prompt-input';
 import {
@@ -28,6 +29,7 @@ import {
   ToolOutput,
 } from '@/components/ai-elements/tool';
 import Sidebar from '@/components/chat/Sidebar';
+import { InputGroupAddon } from '@/components/ui/input-group';
 import type { Session, SessionWithMessages } from '@/lib/api-client';
 import {
   createSession,
@@ -193,6 +195,9 @@ function Chat(): React.ReactElement {
                 placeholder="Type your message..."
                 disabled={status !== 'ready'}
               />
+              <InputGroupAddon align="inline-end">
+                <PromptInputSubmit status={status} />
+              </InputGroupAddon>
             </PromptInputBody>
           </PromptInput>
         </div>

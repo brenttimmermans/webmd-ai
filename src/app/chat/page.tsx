@@ -178,7 +178,7 @@ function Chat(): React.ReactElement {
   const isStreaming = status === 'streaming' || status === 'submitted';
 
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex h-dvh w-full">
       {isNarrow && sidebarOpen && (
         <>
           <button

@@ -133,3 +133,7 @@
     @apply font-sans;
   }
 }
+
+.chat-input-wrapper [data-slot="input-group"] {
+  padding-block: 24px;
+}

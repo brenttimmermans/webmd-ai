@@ -21,11 +21,10 @@ import {
   PromptInput,
   PromptInputBody,
   PromptInputSubmit,
-  PromptInputTextarea,
 } from '@/components/ai-elements/prompt-input';
 import Sidebar from '@/components/chat/Sidebar';
 import TriageResult from '@/components/chat/TriageResult';
-import { InputGroupAddon } from '@/components/ui/input-group';
+import { InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import {
   createSession,
   deleteSession,
@@ -297,20 +296,20 @@ function Chat(): React.ReactElement {
                 </ConversationContent>
               </Conversation>
 
-              <PromptInput onSubmit={handleSubmit} className="mt-4">
-                <PromptInputBody>
-                  <PromptInputTextarea
-                    onChange={(e) => setInput(e.target.value)}
-                    className="md:leading-10"
-                    value={input}
-                    placeholder="Type your message..."
-                    disabled={status !== 'ready'}
-                  />
-                  <InputGroupAddon align="inline-end">
-                    <PromptInputSubmit status={status} />
-                  </InputGroupAddon>
-                </PromptInputBody>
-              </PromptInput>
+              <div className="chat-input-wrapper">
+                <PromptInput onSubmit={handleSubmit} className="mt-4">
+                  <PromptInputBody>
+                    <InputGroupInput
+                      value={input}
+                      placeholder="Type your message..."
+                      onChange={(e) => setInput(e.target.value)}
+                    />
+                    <InputGroupAddon align="inline-end" className="pr-3">
+                      <PromptInputSubmit status={status} />
+                    </InputGroupAddon>
+                  </PromptInputBody>
+                </PromptInput>
+              </div>
             </>
           )}
         </div>

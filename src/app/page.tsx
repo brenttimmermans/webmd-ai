@@ -12,10 +12,10 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-50 dark:bg-black">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background">
       <Link
         href="/chat"
-        className="rounded-full bg-foreground px-6 py-3 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc]"
+        className="rounded-full bg-primary px-6 py-3 text-primary-foreground transition-colors hover:bg-primary/90"
       >
         Go to chat
       </Link>

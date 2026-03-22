@@ -70,7 +70,7 @@ export default function Sidebar({
           type="button"
           onClick={onNewChat}
           disabled={isNewChatDisabled}
-          className="flex w-full items-center justify-center gap-2 rounded-md border border-solid border-black/[0.08] px-3 py-2 text-sm font-medium transition-colors hover:bg-black/[0.04] disabled:pointer-events-none disabled:opacity-50 dark:border-white/[0.145] dark:hover:bg-white/[0.08]"
+          className="flex w-full items-center justify-center gap-2 rounded-md border border-sidebar-border px-3 py-2 text-sm font-medium transition-colors hover:bg-sidebar-accent disabled:pointer-events-none disabled:opacity-50"
           aria-label="Start new chat"
         >
           <Plus className="size-4" />

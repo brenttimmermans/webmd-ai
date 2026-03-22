@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { Montserrat } from 'next/font/google';
+import { Figtree } from 'next/font/google';
 import './globals.css';
 
-const montserrat = Montserrat({
+const figtree = Figtree({
   variable: '--font-sans',
   subsets: ['latin'],
 });
@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} h-full antialiased`}>
+    <html lang="en" className={`${figtree.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

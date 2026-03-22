@@ -1,4 +1,5 @@
 import { handleChatStream } from '@mastra/ai-sdk';
+import { RequestContext } from '@mastra/core/request-context';
 import { createUIMessageStreamResponse } from 'ai';
 import { eq } from 'drizzle-orm';
 
@@ -36,11 +37,16 @@ export async function handleChatPost(
     }
   }
 
+  const requestContext = new RequestContext();
+  if (isValidSession) {
+    requestContext.set('sessionId', sessionId);
+  }
+
   const stream = await handleChatStream({
     mastra,
     agentId: traigeAgent.id,
     // @ts-expect-error - TODO: fix this
-    params,
+    params: { ...params, requestContext },
   });
 
   const transformedStream = isValidSession

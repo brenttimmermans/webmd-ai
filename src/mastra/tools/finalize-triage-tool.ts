@@ -1,5 +1,10 @@
 import { createTool } from '@mastra/core/tools';
+import { eq } from 'drizzle-orm';
 import { z } from 'zod';
+
+import { results, sessions } from '@/db/schema';
+import { db } from '@/lib/db';
+import { isValidUuid } from '@/lib/uuid';
 
 const urgencyEnum = z.enum(['emergency', 'urgent', 'routine']);
 const consultationTypeEnum = z.enum([
@@ -49,10 +54,16 @@ export const finalizeTriage = createTool({
     'Call this when you have gathered enough symptom information to produce a triage recommendation. Use after 3-5 follow-up exchanges.',
   inputSchema,
   outputSchema,
+  requestContextSchema: z.object({
+    sessionId: z.string().optional(),
+  }),
   execute: async (
     inputData: z.infer<typeof inputSchema>,
+    context?: {
+      requestContext?: { get: (key: 'sessionId') => string | undefined };
+    },
   ): Promise<z.infer<typeof outputSchema>> => {
-    return {
+    const result = {
       id: crypto.randomUUID(),
       urgency: inputData.urgency,
       pathway: inputData.pathway,
@@ -61,5 +72,41 @@ export const finalizeTriage = createTool({
       reasoning: inputData.reasoning,
       symptoms: inputData.symptoms,
     };
+
+    const sessionId = context?.requestContext?.get('sessionId') as
+      | string
+      | undefined;
+    if (sessionId) {
+      await saveTriageResult(sessionId, result);
+    }
+
+    return result;
   },
 });
+
+async function saveTriageResult(
+  sessionId: string,
+  result: z.infer<typeof outputSchema>,
+): Promise<void> {
+  if (!isValidUuid(sessionId)) return;
+
+  try {
+    await db
+      .insert(results)
+      .values({
+        sessionId,
+        urgency: result.urgency,
+        pathway: result.pathway,
+        consultationType: result.consultationType,
+        nextSteps: result.next,
+        rawOutput: result as unknown as Record<string, unknown>,
+      })
+      .onConflictDoNothing({ target: results.sessionId });
+    await db
+      .update(sessions)
+      .set({ status: 'completed', updatedAt: new Date() })
+      .where(eq(sessions.id, sessionId));
+  } catch {
+    // Fire-and-forget; do not block response
+  }
+}

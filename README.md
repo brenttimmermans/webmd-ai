@@ -67,11 +67,11 @@ Open [http://localhost:3000](http://localhost:3000) and go to the chat.
 
 ```
   Chat UI         API (/chat, /sessions)        Mastra Agent
-  (Next.js)  →    (Next.js routes)         →    (GPT-4o-mini)
+  (Next.js)  →    (Next.js routes)         →    (GPT-4o-mini)   →    OpenAI
                         │                             │
-                        ├─────────────────────────────┼── OpenAI
                         │                             │
-                        └─────────────────────────────┴── Postgres (Neon)
+                        │                             │
+                        └───────────────────── Postgres (Neon)
 ```
 
 - **API** — Stores sessions and messages in Postgres.

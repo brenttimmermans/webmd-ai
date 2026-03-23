@@ -1,12 +1,10 @@
 # WebMD AI — Otto
 
-> The [`docs`](docs) folder includes some additional notes and a time sheet for this case.
-
-<p align="center">
-  <img src="public/images/otto-full.png" alt="Otto" width="120" />
-</p>
+<img src="docs/screenshot.jpeg" alt="A screenshot of the project" />
 
 **Otto** is a friendly medical triage assistant. Share what's on your mind and Otto will ask clarifying questions about your symptoms, then suggest a recommended pathway (emergency, urgent, or routine care). Otto doesn’t diagnose; it listens and directs you to the right next steps.
+
+> The [`docs`](docs) folder includes some additional notes and a time sheet for this case.
 
 ---
 
@@ -78,3 +76,7 @@ Open [http://localhost:3000](http://localhost:3000) and go to the chat.
 
 - **API** — Stores sessions and messages in Postgres.
 - **Mastra agent** — Calls OpenAI for chat; `finalizeTriage` tool writes triage results to Postgres.
+
+<p align="center">
+  <img src="public/images/otto-full.png" alt="Otto" width="120" />
+</p>
